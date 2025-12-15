@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: factory-saas-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admin@2025
+      POSTGRES_DB: Factory_SaaS
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: factory-saas-backend
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: "postgresql://postgres:Admin%402025@db:5432/Factory_SaaS"
+      JWT_SECRET: "super-strong-jwt-secret"
+      PORT: 4000
+      CLIENT_URL: "http://localhost:5173"
+    depends_on:
+      - db
+    ports:
+      - "4000:4000"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: factory-saas-frontend
+    environment:
+      VITE_API_BASE_URL: "http://localhost:4000/api"
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  pgdata:
+
+
