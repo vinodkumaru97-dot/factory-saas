@@ -1,4 +1,4 @@
-import jwt, { SignOptions } from "jsonwebtoken";
+import jwt, { SignOptions, JwtPayload } from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -14,6 +14,6 @@ export const signToken = (payload: object): string => {
   return jwt.sign(payload, JWT_SECRET, options);
 };
 
-export const verifyToken = <T>(token: string): T => {
-  return jwt.verify(token, JWT_SECRET) as T;
+export const verifyToken = (token: string): JwtPayload => {
+  return jwt.verify(token, JWT_SECRET) as JwtPayload;
 };
