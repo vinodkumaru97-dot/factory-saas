@@ -20,13 +20,7 @@ const app = express();
 
 app.use(
   cors({
-    // allow local dev URLs and the configured client URL from env
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:5175",
-      ENV.CLIENT_URL
-    ],
+    origin: ENV.CLIENT_URL,
     credentials: false
   })
 );
